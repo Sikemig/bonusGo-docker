@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_bonusgo
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: bonusgo
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+      
+
+  backend:
+    build:
+      context: ./bonusGo-back
+      dockerfile: Dockerfile
+    image: bonusgo-backend:latest
+    container_name: backend_bonusgo
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bonusgo
+      DB_URL: jdbc:mysql://mysql:3306/bonusgo
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      JWT_SECRET: 4JD1qSReFzYhVQNmqBzE1VcDFn92xFv4fXa2vRHYmAjwhQxzk2UAX9G4dJZ1mFBo8GSKgZMeXt6xWPH31V9K0Q==
+    depends_on:
+      - mysql
+
+  frontend:
+    build:
+      context: ./bonusGo-react
+      dockerfile: Dockerfile
+    image: bonusgo-frontend:latest
+    container_name: frontend_bonusgo
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+networks:
+  default:
+    name: bonusgo_network
+volumes:
+  mysql_data:
