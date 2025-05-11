@@ -116,9 +116,9 @@ export default function ModoUsuarioProductos() {
                     </NavDropdown>
                   </>
                 )}
-                <Link className="nav-link" to={rol === 2 ? "/indexUsuarioAdministrador" : "/indexUsuario"}>
+                <Nav.Link className="nav-link" to={rol === 2 ? "/indexUsuarioAdministrador" : "/indexUsuario"}>
                   Inicio
-                </Link>
+                </Nav.Link>
                 <NavDropdown title="Ver" id="ver-dropdown">
                   <NavDropdown.Item onClick={handleUsuarioObjetivos}>Ver Objetivos</NavDropdown.Item>
                   <NavDropdown.Item onClick={handleUsuarioProducto}>Ver Productos</NavDropdown.Item>
