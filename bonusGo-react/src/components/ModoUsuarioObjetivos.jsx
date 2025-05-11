@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Modal, Button, Form, Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
+import { Button, LinkContainer, Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 import axios from 'axios';
 import pigCoinLogo from "../assets/images/PigCoin_2.jpg";
 
@@ -115,9 +115,9 @@ export default function ModoUsuarioObjetivos() {
                     </NavDropdown>
                   </>
                 )}
-                <Link className="nav-link" to={rol === 2 ? "/indexUsuarioAdministrador" : "/indexUsuario"}>
-                  Inicio
-                </Link>
+                <LinkContainer to={rol === 2 ? "/indexUsuarioAdministrador" : "/indexUsuario"}>
+                  <Nav.Link>Inicio</Nav.Link>
+                </LinkContainer>
                 <NavDropdown title="Ver" id="ver-dropdown">
                   <NavDropdown.Item onClick={handleUsuarioObjetivos}>Ver Objetivos</NavDropdown.Item>
                   <NavDropdown.Item onClick={handleUsuarioProducto}>Ver Productos</NavDropdown.Item>
