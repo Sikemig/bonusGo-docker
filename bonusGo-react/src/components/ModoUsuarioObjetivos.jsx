@@ -115,7 +115,6 @@ export default function ModoUsuarioObjetivos() {
                     </NavDropdown>
                   </>
                 )}
-                console.log(rol); 
                 <Link className="nav-link" to={rol === 2 ? "/indexUsuarioAdministrador" : "/indexUsuario"}>
                   Inicio
                 </Link>
