@@ -115,9 +115,10 @@ export default function ModoUsuarioObjetivos() {
                     </NavDropdown>
                   </>
                 )}
-                <LinkContainer to={rol === 2 ? "/indexUsuarioAdministrador" : "/indexUsuario"}>
-                  <Nav.Link>Inicio</Nav.Link>
-                </LinkContainer>
+                console.log(rol); 
+                <Link className="nav-link" to={rol === 2 ? "/indexUsuarioAdministrador" : "/indexUsuario"}>
+                  Inicio
+                </Link>
                 <NavDropdown title="Ver" id="ver-dropdown">
                   <NavDropdown.Item onClick={handleUsuarioObjetivos}>Ver Objetivos</NavDropdown.Item>
                   <NavDropdown.Item onClick={handleUsuarioProducto}>Ver Productos</NavDropdown.Item>
