@@ -26,43 +26,27 @@ public class TransaccionServiceImp implements TransaccionService {
 
     @Override
     public Transaccion canjearProducto(int userId, int productoId) {
-        try {
-            Transaccion existente = transaccionRepository.findTransaccionCanjeadaPorUsuarioYProducto(userId, productoId);
-            if (existente != null) {
-                System.out.println("El producto ya fue canjeado por este usuario.");
-                return null;
-            }
-
-            Optional<Usuario> usuarioOptional = usuarioRepository.findById(userId);
-            if (!usuarioOptional.isPresent()) {
-                System.out.println("Usuario no encontrado");
-                return null;
-            }
-
-            Optional<Producto> productoOptional = productoRepository.findById(productoId);
-            if (!productoOptional.isPresent()) {
-                System.out.println("Producto no encontrado");
-                return null;
-            }
-
-            Usuario usuario = usuarioOptional.get();
-            Producto producto = productoOptional.get();
-
-            if (usuario.getMoneda() < producto.getCoste()) {
-                System.out.println("No tienes suficientes PigCoins para canjear este producto.");
-                return null;
-            }
-
-            usuario.setMoneda(usuario.getMoneda() - producto.getCoste());
-            usuarioRepository.save(usuario);
-
-            Transaccion transaccion = new Transaccion(usuario, producto, true);
-            return transaccionRepository.save(transaccion);
-
-        } catch (Exception e) {
-            System.out.println("Error al canjear producto: " + e.getMessage());
-            return null;
+        Transaccion existente = transaccionRepository.findTransaccionCanjeadaPorUsuarioYProducto(userId, productoId);
+        if (existente != null) {
+            throw new RuntimeException("El producto ya fue canjeado por este usuario.");
         }
+
+        Usuario usuarioEncontrado = usuarioRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        Producto productoEncontrado = productoRepository.findById(productoId)
+                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+
+
+        if (usuarioEncontrado.getMoneda() < productoEncontrado.getCoste()) {
+            throw new RuntimeException("No tienes suficientes PigCoins para canjear este producto.");
+        }
+
+        usuarioEncontrado.setMoneda(usuarioEncontrado.getMoneda() - productoEncontrado.getCoste());
+        usuarioRepository.save(usuarioEncontrado);
+
+        Transaccion transaccion = new Transaccion(usuarioEncontrado, productoEncontrado, true);
+        return transaccionRepository.save(transaccion);
     }
 
     @Override
